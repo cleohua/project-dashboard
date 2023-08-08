@@ -1,0 +1,167 @@
+var unitTemp = /*html*/ `
+<div
+    class="one-unit"
+>
+    <template
+        v-if="edit"
+    >
+        <div
+            v-show="!unitData.showList"
+            class="unit-info-area"
+        >
+            <div>
+                <div>
+                    <div>類別名稱</div>
+                    <div
+                        class="dark-theme type-name-input"
+                    >
+                        <input
+                            type="text"
+                            v-model.trim="unitData.typeName"
+                        >
+                    </div>
+                </div>
+                <div
+                    class="point-remind-text"
+                >
+                    <div>配分比例</div>
+                    <div>{{remindText}}</div>
+                    <div
+                        class="set-point"
+                    >
+                        <input
+                            type="range"
+                            v-model="unitData.point"
+                            min="0"
+                            max="100"
+                            step="1"
+                            ref="rangeInput"
+                            :style="rangeStyle"
+                        >
+                        <div
+                            class="point-number-text"
+                            :style="pointNumberStlye"
+                        >{{unitData.point}}%</div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div
+                    class="cancel-btn"
+                    @click="cancelClick"
+                >取消</div>
+                <div
+                    class="sure-btn"
+                    @click="sureClick"
+                >{{sureText}}</div>
+            </div>
+        </div>
+    </template>
+    <div
+        v-show="unitData.showList"
+        class="unit-list-area"
+    >
+        <div
+            class="unit-info"
+        >
+            <div
+                class="unit-name"
+            >
+                <div>{{nameText}}</div>
+                <div
+                    v-show="editable"
+                    @click="infoEditClick"
+                >
+                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                </div>
+            </div>
+            <div
+                v-if="edit"
+                type="add"
+                @click="addList"
+            ></div>
+            <div
+                v-if="edit"
+                type="remove"
+                @click="removeClick"
+            ></div>
+        </div>
+        <div>
+            <div
+                class="list-header sh-checklist-line"
+            >
+                <div
+                    class="name"
+                >檢查內容</div>
+                <div
+                    class="pointset"
+                >扣分上限</div>
+                <div
+                    class="option-area"
+                ></div>
+            </div>
+            <list-compon
+                v-for="(list, index) in unitData.list"
+                :key="list.keyIndex"
+                :listData="list"
+                :limit="unitLimit"
+                :edit="edit"
+                @remove="removeList(index)"
+                @pointchange="pointChange"
+                @input-focus="inputFocus(index)"
+                @tag-click="onTagClick"
+            ></list-compon>
+        </div>
+    </div>
+</div>
+`;
+
+var listTemp = /*html*/ `
+<div
+    class="sh-checklist-line"
+>
+    <div
+        class="name"
+    >
+        <input
+            type="text"
+            v-model="listData.name"
+            :readonly="!edit"
+        >
+    </div>
+    <div
+        class="pointset"
+    >
+        <input
+            type="number"
+            v-model="listData.point"
+            @focus="inputFocus"
+            @input="pointChange"
+            :readonly="!edit"
+            min="0"
+            :max="limit"
+        >
+        <span>分</span>
+    </div>
+    <div
+        class="option-area"
+    >
+        <div
+            type="remove"
+            v-if="edit"
+            @click="removeClick"
+        ></div>
+        <div
+            type="tag"
+            v-if="!edit"
+            @click="tagClick"
+            class="hover-notice-dark"
+            title-text="常用細項訊息設定"
+        >
+            <div></div>
+        </div>
+    </div>
+</div>
+`
+
+export {unitTemp, listTemp};

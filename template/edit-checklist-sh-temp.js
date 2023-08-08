@@ -1,0 +1,92 @@
+export default /*html*/ `
+<full-size
+    :elementID="elementID"
+    :titleText="titleText"
+    :nextBtnShow="nextBtnShow"
+    :nextBtnText="nextBtnText"
+    :closeCheck="closeCheck"
+    :closeCheckFun="closeCheckFun"
+    @nextBtnClick="nextBtnClick"
+    @afterLeave="afterLeave"
+    ref="dialog"
+>
+    <div 
+        :class="{'loading': loading}"
+    >
+        <div
+            class="sh-page-header"
+        >
+            <div
+                class="title"
+            >
+                <div>{{listName}}</div>
+                <div
+                    v-if="editMode"
+                    class="edit-btn"
+                    @click="editListInfo"
+                >
+                    <i class="fa fa-pencil-square-o"></i>
+                </div>
+            </div>
+            <div
+                class="points-info"
+            >
+                <div>
+                    <span>基準分：</span>
+                    <span>{{point}}</span>
+                </div>
+                <div>
+                    <div>
+                        <span>規模權重：</span>
+                        <span>{{ratioText(scope_rate)}}</span>
+                    </div>
+                    <div>
+                        <span>進度權重：</span>
+                        <span>{{ratioText(progress_rate)}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div
+            class="sh-page-content"
+        >
+            <unit-compon
+                v-for="(unitData, index) in data"
+                :key="unitData.keyIndex"
+                ref="unit"
+                :unitData="unitData"
+                :limit="limit"
+                :edit="editMode"
+                :editable="showImportOption"
+                @remove="removeUnit(index)"
+                @onedit="onEdit(index)"
+                @tag-click="onTagClick"
+                @editfinish="onEditFinish(index)"
+            ></unit-compon>
+            <div
+                v-show="showImportOption"
+                class="insert-option-area"
+            >
+                <div>選擇新增方式</div>
+                <div>
+                    <div
+                        @click="importFile"
+                    >匯入新增</div>
+                    <div
+                        @click="insertUnit"
+                    >手動新增</div>
+                </div>
+                <div
+                    @click="download"
+                >下載匯入範本</div>
+            </div>
+        </div>
+        <input
+            style="display: none;"
+            ref="fileInput"
+            @change="fileUpload($event)"
+            type="file"
+        >
+    </div>
+</full-size>
+`;

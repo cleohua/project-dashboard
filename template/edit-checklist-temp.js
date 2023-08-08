@@ -1,0 +1,104 @@
+export default /*html*/ `
+<full-size
+    :elementID="elementID"
+    :titleText="titleText"
+    :nextBtnShow="nextBtnShow"
+    :nextBtnText="nextBtnText"
+    :closeCheck="closeCheck"
+    :closeCheckFun="closeCheckFun"
+    @nextBtnClick="nextBtnClick"
+    @afterLeave="afterLeave"
+    ref="dialog"
+>
+    <div
+        :class="{'loading': loading}"
+        @click="pageClick"
+    >
+        <div
+            class="list-header"
+        >
+            <div
+                class="list-name"
+            >
+                <div>{{name}}</div>
+                <div
+                    v-if="editMode"
+                    class="edit-btn"
+                    @click="editName"
+                >
+                    <i class="fa fa-pencil-square-o"></i>
+                </div>
+            </div>
+            <div>
+                <div 
+                    class="dark-theme"
+                >
+                    <input
+                        type="text"
+                        v-model="searchText"
+                        placeholder="輸入關鍵字搜尋"
+                    >
+                </div>
+                <div
+                    class="insert-options"
+                    v-if="editMode"
+                >
+                    <div
+                        @click="newUnit"
+                    >新增項目</div>
+                    <div
+                        @click.stop="optionMenuShow = !optionMenuShow"
+                    ></div>
+                    <div
+                        v-show="optionMenuShow"
+                        class="option-menu"
+                        @click.stop
+                    >
+                        <div
+                            v-for="(text,index) in optionMenuTab"
+                            :key="index"
+                            @click="optionMenuClick(index)"
+                        >{{text}}</div>
+                    </div>
+                    <input
+                        ref="fileInput"
+                        style="display:none;"
+                        type="file"
+                        accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                        @change="importFile($event)"
+                    >
+                </div>
+            </div>
+        </div>
+        <div
+           class="list-content scroll-style-gray-thick"
+        >
+            <draggable
+                v-model="data"
+                class="list-child"
+                :class="{'on-drag': onDrag}"
+                drag-class="drag"
+                ghost-class="ghost"
+                handle=".drap-icon" 
+                @start="dragStart"
+                @end="dragEnd"
+            >
+                <unit-compon
+                    v-for="list in filtered"
+                    :key="list.keyIndex"
+                    :data="list"
+                    :menu-show="menuShow"
+                    :level="0"
+                    :edit="editMode"
+                    @menu-click="menuClick"
+                    @tag-click="onTagClick"
+                    @new="onNew"
+                    @trans="onTrans"
+                    @delete="onDelete"
+                    @on-drag-start="onDragStart"
+                ></unit-compon>
+            </draggable>
+        </div>
+    </div>
+</full-size>
+`

@@ -1,0 +1,95 @@
+export default `
+<full-dialog
+    :elementID="elementID"
+    :titleText="titleText"
+    :nextBtnShow="nextBtnShow"
+    :nextBtnText="nextBtnText"
+    :subMenu="subMenu"
+    :subMenuArr="subMenuArr"
+    ref="dialog"
+    @close="closeClick"
+    @afterLeave="afterLeave"
+    @sendAll="sendAll"
+    @exportpaper="exportPaper"
+    @delete="deletePaper"
+>
+    <div
+        :class="{'loading': loading}"
+        @wheel="pageWheel"
+    >
+        <div
+            class="paper-header"
+            :class="{'flip-up': paperHeaderHide}"
+        >
+            <div
+                class="header-left"
+            >
+                <div>
+                    <div>{{paperInfo.name}}</div>
+                    <div
+                        v-if="infoEditable"
+                        class="edit hover-notice-dark"
+                        title-text="編輯工地基本資料"
+                        @click="editInfo"
+                    >
+                        <i class="fa fa-pencil-square-o"></i>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <span>督導日期：</span>
+                        <span>{{paperInfo.date}}</span>
+                    </div>
+                    <div>
+                        <span>工處別：</span>
+                        <span>{{paperInfo.office || '無指定'}}</span>
+                    </div>
+                    <div>
+                        <span>工地：</span>
+                        <span>{{paperInfo.project.name}}</span>
+                    </div>
+                    <div
+                        class="hover-notice-dark"
+                        title-text="檢視工地概況"
+                        @click="showDetail"
+                    >
+                        <div></div>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="header-right"
+            >
+                <div>
+                    <span>督導人員：</span>
+                    <span>{{paperInfo.user.name}}</span>
+                </div>
+            </div>
+        </div>
+        <div
+            class="paper-content"
+        >
+            <div>
+                <div
+                    v-for="(tab, index) in filterdTab"
+                    class="tab-options"
+                    :class="{'active': index == currentTab}"
+                    :key="tab.keyIndex"
+                    @click="tabClick(index)"
+                >{{tab.name}}</div>
+            </div>
+            <keep-alive>
+                <component
+                    :is="currentCompon"
+                    :ref="currentCompon"
+                    :uid="uid"
+                    :editable="editable"
+                    :isproject="isProject"
+                    @childevent="childEvent"
+                    @wheel="childPageWheel"
+                ></component>
+            </keep-alive>
+        </div>
+    </div>
+</full-dialog>
+`

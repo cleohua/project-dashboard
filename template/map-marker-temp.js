@@ -1,0 +1,95 @@
+export default /*html*/ `
+<float-dialog
+    :elementID="elementID"
+    :titleText="titleText"
+    :type="type"
+    :bottomFinishShow="bottomFinishShow"
+    :bottomCancelText="bottomCancelText"
+    :showCloseBtn="showCloseBtn"
+    :bottomShow="bottomShow"
+    @afterLeave="afterLeave"
+    ref="dialog"
+>
+    <div
+        :class="{'loading': loading}"
+    >
+        <div
+            class="marker-content"
+            ref="canvasArea"
+        >
+            <canvas 
+                id="canvas"
+            ></canvas>
+            <div
+                class="canvas-header"
+                v-if="showHeaderText"
+            >{{headerText}}</div>
+            <div
+                class="buttom-btn-area"
+            >
+                <div
+                    v-if="showPinButtom"
+                    class="pin-buttom"
+                    @click="pinClick"
+                >記錄</div>
+                <div
+                    v-if="showEditButtom"
+                    class="delete-buttom"
+                    @click="deleteClick"
+                >刪除</div>
+                <div
+                    v-if="showEditButtom"
+                    class="edit-buttom"
+                    @click="editClick"
+                >修改</div>
+                <div
+                    v-if="onMarkEdit"
+                    class="cancel-buttom"
+                    @click="cancelClick"
+                >取消</div>
+                <div
+                    v-if="onMarkEdit"
+                    class="sure-buttom"
+                    @click="sureClick"
+                >確認</div>
+            </div>
+            <div
+                class="scroll-btn"
+            >
+                <div
+                    @click="scrollClick(1)"
+                >+</div>
+                <div
+                    @click="scrollClick(-1)"
+                >-</div>
+            </div>
+        </div>
+        <div
+            class="marker-bottom"
+        >
+            <div
+                @click="miniSelectShow = true"
+            >
+                <i class="fa fa-map" aria-hidden="true"></i>
+                <span>{{currentMapText}}</span>
+                <mini-select
+                    v-show="miniSelectShow"
+                    :options="mapList4miniSelect"
+                    :withsearch="false"
+                    :label="'name'"
+                    :withIconRear="true"
+                    :reduce="v => v.uid"
+                    @onselect="mapSelect"
+                ></mini-select>
+            </div>
+            <div
+                style="flex: 1;"
+            ></div>
+            <div
+                class="close-btn"
+                @click="nextBtnClick"
+            >關閉全螢幕</div>
+        </div>
+    </div>
+</float-dialog>
+`
